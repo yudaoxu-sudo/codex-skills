@@ -1,0 +1,7 @@
+interface:
+  display_name: "Risk"
+  short_description: "短别名：用风险镜子分析要不要做"
+  default_prompt: "Use $risk to analyze this decision with the risk mirror."
+
+policy:
+  allow_implicit_invocation: true

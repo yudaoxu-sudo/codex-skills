@@ -1,0 +1,7 @@
+interface:
+  display_name: "Taleb Uncertainty Decision"
+  short_description: "用塔勒布框架分析不确定性、肥尾、反脆弱与责任风险决策"
+  default_prompt: "Use $taleb-uncertainty-decision to analyze this decision under randomness, tail risk, antifragility, and skin in the game."
+
+policy:
+  allow_implicit_invocation: true
