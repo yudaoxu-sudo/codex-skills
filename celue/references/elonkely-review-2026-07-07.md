@@ -4,21 +4,26 @@ Source scope: `@ElonKely_` public X timeline, fetched via agent-reach `twitter-c
 
 Profile checked: `https://x.com/ElonKely_`, display name `链上小敖丙`, public bio says the account shares full-chain/full-network monitoring and content is not operating advice.
 
-Fetch result: 300 unique posts captured with `twitter user-posts @elonkely_ -n 300 --json`, using a temporary `rateLimit.maxCount: 500` config. Coverage runs from `2026-07-07T13:01:38Z` to `2026-01-21T05:00:36Z`. Source quality is `sampled social evidence`: useful for extracting methods and repeated patterns; each live trade decision still requires local verification.
+Fetch result: 500 unique posts captured with `twitter user-posts @elonkely_ -n 500 --json`, using a temporary `rateLimit.maxCount: 500` config. Coverage runs from `2026-07-07T13:01:38Z` to `2025-10-13T09:27:54Z`. Source quality is `sampled social evidence`: useful for extracting methods and repeated patterns; each live trade decision still requires local verification.
 
-The 300-post scan produced these keyword-class counts:
+The 500-post scan produced these keyword-class counts:
 
-- CEX / wallet flow: 175 posts.
-- OI / funding / derivatives: 68 posts.
-- Listing / deposit / exchange event: 56 posts.
-- Unlock / supply / multisig / chip movement: 45 posts.
-- Case follow-up / review: 33 posts.
-- Distribution / sell pressure: 33 posts.
-- Sector rotation: 31 posts.
-- Accumulation / buy flow: 19 posts.
-- Explicit risk discipline / wait language: 11 posts.
+- CEX / wallet flow: 258 posts.
+- Official news / announcement: 145 posts.
+- Listing / deposit / exchange event: 126 posts.
+- OI / funding / derivatives: 109 posts.
+- Sector rotation: 95 posts.
+- Social call / community: 73 posts.
+- Unlock / supply / multisig / chip movement: 73 posts.
+- Meme sniping / early meme event: 44 posts.
+- Case follow-up / review: 43 posts.
+- Distribution / sell pressure: 38 posts.
+- Accumulation / buy flow: 21 posts.
+- Explicit risk discipline / wait language: 15 posts.
 
-Top repeated tickers in this sample: `BEAT`, `TLM`, `HEI`, `TAC`, `GENIUS`, `AIGENSYN`, `SOL`, `MEMES`, `MYX`, `BTW`, `BANK`, `HYPE`, `SYN`, `XPIN`, `COLLECT`, `ESPORTS`, `ETH`, `ESPORT`.
+The added 301-500 segment covers 200 older posts from `2026-01-20T05:18:52Z` to `2025-10-13T09:27:54Z`. It is more announcement- and meme-trigger-heavy than the first 300 posts: CEX / wallet flow 83, official news 76, listing / exchange event 66, OI / funding 41, sector rotation 37, unlock / supply 16, meme sniping 10.
+
+Top repeated tickers in the 500-post sample: `ETH`, `SOL`, `BTC`, `BEAT`, `LINK`, `ASTER`, `HYPE`, `UNI`, `TLM`, `HEI`, `TAC`, `GENIUS`, `AIGENSYN`, `MEMES`, `MYX`, `BTW`, `BANK`, `JUP`, `SYN`, `XPIN`, `COLLECT`.
 
 ## High-Value Patterns To Adopt
 
@@ -184,12 +189,103 @@ Representative sources:
 - `https://x.com/ElonKely_/status/2070823628367954037`: VELVET exchange cycling and manufactured buy flow.
 - `https://x.com/ElonKely_/status/2072598800066289926`: derivatives positioning followed by chain distribution.
 
+### 10. Meme And News Triggers Are Speed Trades
+
+The additional 200 posts include many early meme/news triggers: official account posts, founder reposts, Binance-related phrases, Pump/SOL narratives, seasonal names, and celebrity/institution associations. Their edge is timing and exit discipline.
+
+Adopted rules:
+
+- For meme/news setups, record `original_catalyst`, `source_authority`, `first_seen_time`, `market_cap_at_detection`, `liquidity`, `holder_quality`, and `time_lag_to_price_move`.
+- Treat official/founder/exchange reposts as event triggers. They create a watch or short-lived trade window, not long-horizon conviction by themselves.
+- If the first public trigger already produced a 5x-10x move, mark the setup as late-stage unless fresh liquidity, holder quality, and venue support are present.
+- Tiny market cap entries need pre-defined exit targets. After the first violent move, default to protect profit and stop adding size.
+
+Representative sources:
+
+- `https://x.com/ElonKely_/status/2013481332094181425`: Pump official activity triggered SOL-chain attention; tiny NPM market cap moved rapidly.
+- `https://x.com/ElonKely_/status/2013187921306865882`: media post, He Yi repost, and CZ repost split attention between two meme names.
+- `https://x.com/ElonKely_/status/1984145408806023577`: Trump meme wallet receiving VALOR.
+- `https://x.com/ElonKely_/status/1985272736726552772`: Binance fee donation support for GIGGLE as a narrative/event trigger.
+
+### 11. Exchange Listing Pipeline Is A Watch Queue
+
+The added segment has many listing and tag posts: Binance spot, Binance perpetuals, seed tag, monitoring tag, delisting, wallet support, Upbit listing, and Bithumb listing. These events should create a calendar and checklist.
+
+Adopted rules:
+
+- Record event type: spot listing, perpetual listing, seed tag, monitoring tag, delisting, wallet support, deposit open, pair expansion.
+- Treat perpetual listing as a derivatives-liquidity event; spot listing and deposit opening change sell-route risk more directly.
+- Treat monitoring tag and delisting calendar as risk plus possible market-cap-maintenance catalyst.
+- For seed-tag listings, check initial float, airdrop share, unlock state, and market depth before action.
+
+Representative sources:
+
+- `https://x.com/ElonKely_/status/1977667604476285366`: EUL Binance spot listing, pairs, seed tag, and deposit time.
+- `https://x.com/ElonKely_/status/1981947320586649905`: GIGGLE/F Binance spot and seed tag.
+- `https://x.com/ElonKely_/status/1995350476825722904`: Binance monitoring tag additions.
+- `https://x.com/ElonKely_/status/2012434321240682959`: Binance delists multiple USDT perpetual pairs.
+- `https://x.com/ElonKely_/status/1994322707786485874`: Binance Wallet integration as a possible listing pipeline signal.
+
+### 12. Tokenomics Catalysts Need Mechanism Labels
+
+The older posts often cite buybacks, burns, tax-to-buyback, fee donation, foundation formation, airdrop, and initial circulation. These are not equivalent.
+
+Adopted rules:
+
+- Label tokenomics catalyst type: burn, buyback, buyback-to-liquidity, fee donation, foundation creation, airdrop, initial circulation, protocol-revenue buyback, token utility change.
+- Burn reduces supply only after execution is official or on-chain; proposal-stage burns stay event risk.
+- Buyback-to-liquidity supports market depth but can still create operator-controlled liquidity.
+- Large airdrop or high initial float creates opening sell pressure even with a good listing.
+
+Representative sources:
+
+- `https://x.com/ElonKely_/status/2012397680006135920`: protocol tax buyback routed into liquidity.
+- `https://x.com/ElonKely_/status/2001568906268545242`: UNI burn proposal.
+- `https://x.com/ElonKely_/status/1996788934773477673`: HOME foundation formation.
+- `https://x.com/ElonKely_/status/1980885608089415925`: TURTLE initial circulation, airdrop, booster rewards, and opening sell pressure.
+- `https://x.com/ElonKely_/status/1980554319331258384`: REZ protocol revenue buyback vote.
+
+### 13. Identity Labels Must Be Verified
+
+Some posts infer value from known people, founders, foundations, custody firms, Coinbase/Cobo-related wallets, and whales. This can be useful, but false identity attribution is dangerous.
+
+Adopted rules:
+
+- Separate identity classes: founder, official foundation, exchange custody, market maker, investor, whale, KOL, unknown.
+- Verify wallet labels from multiple sources before treating a transfer as smart-money behavior.
+- If an address is custody, its behavior may represent many users and should not be read like one whale.
+- Treat founder/KOL endorsement as a social catalyst first; require market and chain confirmation for a durable trade.
+
+Representative sources:
+
+- `https://x.com/ElonKely_/status/2012100464452759714`: address later checked as Cobo custody while buying a meme token.
+- `https://x.com/ElonKely_/status/2012097687685087398`: insider/whale/Coinbase-related address hypothesis before label refinement.
+- `https://x.com/ElonKely_/status/2013177650278523016`: Arthur Hayes / BitMEX founder buy as celebrity whale signal.
+- `https://x.com/ElonKely_/status/2011734632522502647`: BSC Foundation buys as official/foundation flow.
+
+### 14. Venue Competition And Chain Rotation Matter
+
+The added posts show attention shifting among Binance Alpha, SOL memes, Coinbase SOL listings, Binance Wallet integrations, and CEX listing tracks. Venue competition changes where fast money goes.
+
+Adopted rules:
+
+- Track venue rotation: Binance Alpha, Binance spot/perps, Binance Wallet, Coinbase, Upbit/Bithumb, SOL/Pump, Base, ASTER.
+- When one venue captures attention, downgrade weak signals on competing venues until flow returns.
+- If a CEX appears to support a chain or sector after neglecting it, build a watchlist instead of reacting token by token.
+
+Representative sources:
+
+- `https://x.com/ElonKely_/status/2012389268292071929`: Binance Alpha focus versus SOL/Coinbase support.
+- `https://x.com/ElonKely_/status/1993187132954087441`: Binance Alpha reappearing as chain-on-chain sentiment.
+- `https://x.com/ElonKely_/status/1994322707786485874`: Binance Wallet support for MON as venue-pipeline clue.
+
 ## What To Use With Caution
 
 - The account is strong at finding public chain/market anomalies, but posts are still social evidence.
 - Screenshots, Arkham links, and quick claims need local reconstruction before becoming system truth.
 - Hype, engagement prompts, and profit screenshots do not enter the strategy layer.
 - Exact trade direction expires quickly; durable value comes from wallet-path logic and case follow-up discipline.
+- Older meme calls include high variance and strong survivorship bias. Extract trigger mechanics and exit discipline, not historical profit claims.
 
 ## Required Fields To Add When Applying This Review
 
@@ -200,3 +296,8 @@ Representative sources:
 - `event_window`: listing, delisting, monitoring tag, unlock, deposit reopen, sector rotation.
 - `operator_supply`: operator, CEX/pool/custody, verified retail, unknown.
 - `follow_up_clock`: next check time and evidence needed for escalation or downgrade.
+- `catalyst_source`: official/founder/exchange/KOL/media/community/unknown plus first-seen timestamp.
+- `meme_stage`: pre-viral, first public trigger, post-5x, post-10x, exhausted, unknown.
+- `tokenomics_catalyst`: burn, buyback, buyback-to-liquidity, fee donation, foundation, airdrop, initial float, utility change.
+- `identity_label_quality`: verified official, exchange/custody, market maker, inferred whale, KOL, unknown.
+- `venue_rotation`: Binance Alpha, Binance spot/perps, Binance Wallet, Coinbase, Korea CEX, SOL/Pump, Base, ASTER, unknown.
