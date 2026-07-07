@@ -60,9 +60,14 @@ Do not let social claims directly become trading actions. Convert social claims 
 - Do not chase the first anomaly. Early chain activity is a watchlist trigger, not an entry by itself.
 - If a token already had one manipulation cycle, keep monitoring it. Repeat cycles can occur after redistribution, wash volume, and OI reset.
 - For old large-cap or "regular army" tokens, weigh news, business catalysts, tech upgrades, sector rotation, and broad market structure more heavily than small on-chain flows.
-- Respect sector liquidity migration. When meme flow absorbs attention, reduce confidence in secondary Alpha/yield narratives unless fresh capital evidence appears.
+- Respect sector liquidity migration. When meme flow absorbs attention, reduce confidence in secondary Alpha/yield narratives unless fresh CEX/chain evidence appears.
 - For listing catalysts, record exact exchange, listing time, deposit status, market pair, and whether deposits opened before trading.
 - For monitored-tag or possible delisting tokens, ask whether the move is market-cap maintenance, index-weight defense, or forced liquidity work.
+- For meme/news triggers, record original catalyst, source authority, first-seen time, market cap at discovery, liquidity, holder quality, and time lag to price move.
+- Major-account reposts, founder posts, exchange posts, and official campaign posts are event triggers; they require speed and exit discipline, not blind conviction.
+- For post-run meme names, treat 5x-10x moves after the first public trigger as late-stage unless fresh liquidity and holder quality support continuation.
+- For tokenomics catalysts, separate burn, buyback, buyback-to-liquidity, fee donation, foundation formation, airdrop, and initial circulation. Each creates a different pressure profile.
+- For celebrity/founder/institution wallet claims, verify label quality before action. Custody, foundation, market maker, and whale wallets are not interchangeable.
 - Treat small test deposits to exchange wallets as early sell-route probes when the same wallet has repeated this pattern historically.
 - For funding extremes, separate short squeeze risk from distribution risk. Negative funding with active CEX sell paths is different from negative funding with no sell path.
 - For opening-block snipes, do not follow until sellability, opening cohort, wallet source, venue class, and price capacity pass.
@@ -89,6 +94,10 @@ Use Chinese by default.
 - OI/funding:
 - FDV/MC/OI:
 - 事件窗口:
+- 催化源:
+- meme阶段:
+- 代币经济学事件:
+- 场所轮动:
 - 解锁/持仓:
 
 **动作**
