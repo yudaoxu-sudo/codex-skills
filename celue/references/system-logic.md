@@ -84,3 +84,11 @@ Use these action labels consistently:
 - Label tokenomics mechanisms before judging direction; burn, buyback, airdrop, initial float, and foundation formation create different risks.
 - Verify identity labels before using founder, foundation, custody, MM, whale, or KOL behavior as evidence.
 - Track venue rotation so weak signals are downgraded when attention has migrated elsewhere.
+
+## LAB-Derived Checks
+
+- Treat CEX -> intermediate wallet -> perp venue treasury as a distinct sell-route class, not a generic CEX transfer.
+- Record label quality separately for each hop; local labels, explorer screenshot labels, and inferred labels are not equal.
+- When repeated in/out batches use the same intermediate wallet and short time window, summarize the cluster before judging direction.
+- Pair route evidence with OI/MC, OI/FDV, funding, volume/MC, and index composition because high-control tokens can absorb chain selling through derivatives control.
+- Treat deposit-port reopening, venue support, and index-basket changes as event-window inputs even before a large transfer appears.

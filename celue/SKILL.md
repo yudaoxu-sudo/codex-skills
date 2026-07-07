@@ -54,6 +54,8 @@ Do not let social claims directly become trading actions. Convert social claims 
 - Batch-created wallets, multisig fan-out, gas priming, and repeated exchange deposit tests carry more weight than a single large transfer.
 - Deposit-port status matters. Closure, reopening, chain migration, and restored exchange deposits can change the sell-pressure window.
 - Do not mark a transfer as confirmed sell unless receipt or next-hop evidence shows quote-token recovery or exchange deposit with sell intent.
+- If a sell route moves from CEX hot/cold wallets into an intermediate wallet and then into a perp venue treasury or trading venue, record it as `cex_to_perp_venue_sell_route` instead of treating the intermediate wallet as retail.
+- Exchange index composition, deposit-port reopening, and venue support changes are market-structure events. They can raise or lower manipulation cost even before a large token transfer appears.
 - For low-cap tokens, combine FDV, MC, OI, funding, and CEX flow. A large OI relative to MC changes the risk surface.
 - If OI or volume is abnormal while chain movement is quiet, classify the setup as derivatives-led and avoid chain-only conclusions.
 - Track OI/MC and 24h volume/MC ratios for manipulated small caps; extreme ratios can reveal market-maker control before chain flow appears.
@@ -122,5 +124,6 @@ Use Chinese by default.
 Load only the needed reference:
 
 - `references/elonkely-review-2026-07-07.md`: distilled lessons from the reviewed `@elonkely_` posts.
+- `references/lab-native-address-review-2026-07-07.md`: LAB address and CEX-to-Aster route case study.
 - `references/system-logic.md`: the user's current sniper/Alpha monitoring logic and evidence hierarchy.
 - `references/update-protocol.md`: how to update this skill after new cases.
