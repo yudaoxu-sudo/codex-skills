@@ -1,0 +1,4 @@
+interface:
+  display_name: "Celue"
+  short_description: "Crypto strategy rules and on-chain decision workflow"
+  default_prompt: "Use $celue to analyze a crypto opportunity and produce a disciplined action plan."
