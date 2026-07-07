@@ -125,5 +125,7 @@ Load only the needed reference:
 
 - `references/elonkely-review-2026-07-07.md`: distilled lessons from the reviewed `@elonkely_` posts.
 - `references/lab-native-address-review-2026-07-07.md`: LAB address and CEX-to-Aster route case study.
+- `references/aliideez-alpha-opening-review-2026-07-07.md`: `@aLiiDeez` Alpha opening, pool range, bribe/bundle, cross-chain, and launch-capacity rules.
+- `references/crypto-max-market-structure-review-2026-07-07.md`: `@0xcrypto_max` market-structure, buyer-stack, capacity, cost-basis, and second-wave rules.
 - `references/system-logic.md`: the user's current sniper/Alpha monitoring logic and evidence hierarchy.
 - `references/update-protocol.md`: how to update this skill after new cases.
