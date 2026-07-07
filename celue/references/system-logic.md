@@ -6,6 +6,18 @@ This reference summarizes the user's current sniper/Alpha monitoring system as o
 
 External sources discover. Local systems verify, explain, store, and alert.
 
+## Unified Rule Stack
+
+Use the rule layers in this order:
+
+1. Safety and evidence rules: read-only operation, no secrets, no signing, source separation, no social-only action.
+2. Project base rules: monitor outputs, watchlist state, local code behavior, RPC evidence, fixtures, dry-runs, server verification.
+3. Durable strategy references: ElonKely, LAB, aLiiDeez, 0xcrypto_max, and future reviewed KOL/case files.
+4. Live event evidence: official announcements, on-chain transactions, market/OI/funding data, current social discovery, and current inference.
+5. Action rules: `Avoid`, `Observe`, `Reduce`, `Small test`, `Follow only after confirmation`, with stop, invalidation, exit, and next-check triggers.
+
+Older project rules remain active until this file explicitly changes them. New references add checks, fields, and failure modes to the base system. When two rules conflict, prefer the stricter capital-preservation rule and name the conflict in the output.
+
 ## Evidence Stack
 
 1. Official source: exchange announcement, project/founder/docs, contract source.
@@ -26,6 +38,22 @@ External sources discover. Local systems verify, explain, store, and alert.
 - Surf auxiliary market watch supplies external market context.
 - External auxiliary readiness tracks Coinglass/CoinAnk/GMGN/DeBot status; unvalidated sources remain context-only.
 - Daily report combines watchlist, opening, intraday, OI, price, holders, external sources, and verification.
+
+## Project Runtime Evidence
+
+Use project runtime files for current state:
+
+- `config/current_alpha_watchlist.json`: tracked projects and priority lanes.
+- `reports/*_alpha_sniper_daily.md`: latest consolidated daily view.
+- `output/alpha_opening_block_watch/latest.*`: opening-block evidence and first-buyer behavior.
+- `output/alpha_intraday_flow_watch/latest.*`: runtime buy/sell flow, CEX candidates, and gas priming.
+- `output/perp_oi_funding_watch/latest.*`: Binance/OKX/Bybit OI and funding context.
+- `output/alpha_price_momentum_watch/latest.*`: Binance Alpha price, volume, venue, and book context.
+- `output/alpha_holder_concentration_watch/latest.*`: holder concentration after infrastructure exclusion.
+- `output/telegram_signals/` and `output/telegram_user_signals/`: social discovery ingestion, still below verified evidence.
+- `output/sniper_engine/verification_report.md`: local or server verification status.
+
+Do not store these current runtime states inside the skill. Read them from the project workspace when the user asks for a live or current judgment.
 
 ## Hard Rules
 

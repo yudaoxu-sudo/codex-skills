@@ -11,6 +11,17 @@ Turn crypto market noise into a disciplined operating decision. Use this skill t
 
 This skill is a living operating system. When the user asks to update strategy, add the smallest durable rule to this skill and keep the source evidence traceable.
 
+## Operating Contract
+
+Use this skill as the strategy brain for the sniper-monitor project. Always combine:
+
+1. Base rules in `references/system-logic.md`.
+2. Relevant KOL or case references listed in Resource Loading.
+3. Current project evidence from `/Users/xuyufan/Documents/狙击手进程`: watchlist, reports, monitor outputs, local code, RPC checks, fixtures, or server dry-runs.
+4. Fresh official, on-chain, market, and social evidence when the user asks about a live token or current event.
+
+Store durable strategy in this skill. Store current positions, watchlist state, server status, alerts, and raw monitor outputs in the project workspace. Do not replace local verification with skill memory.
+
 ## Source Discipline
 
 Start every analysis by separating claim types:
@@ -26,23 +37,26 @@ Do not let social claims directly become trading actions. Convert social claims 
 ## Default Workflow
 
 1. Define the token/event and time window.
-2. Build the evidence map: official, on-chain, market, social, inference.
-3. Classify the setup:
+2. Load `references/system-logic.md` for the base operating rules.
+3. Load any relevant reference for the token/event style: ElonKely, LAB, aLiiDeez, 0xcrypto_max, or future case files.
+4. Check current project evidence: `config/current_alpha_watchlist.json`, latest `reports/`, latest `output/*/latest.*`, RPC/fixture/dry-run results, and server state when relevant.
+5. Build the evidence map: official, on-chain, market, social, inference.
+6. Classify the setup:
    - accumulation / distribution / listing catalyst / unlock risk / opening-block snipe / meme rotation / old-coin narrative / market-maker control / unknown.
-4. Check the core lenses:
+7. Check the core lenses:
    - CEX flow: exchange outflow, exchange inflow, cold-to-hot, deposit path, unknown-wallet next hop.
    - OI/funding: open interest expansion, funding direction, liquidation pressure, long/short crowding.
    - FDV/MC/OI scale: whether derivatives exposure is large relative to circulating value.
    - Holder and unlock: concentration, known locked supply, unlock calendar, top-holder movement.
    - Venue class: Alpha/CEX-led, on-chain-led, mixed, or unknown.
    - Timing: listing time, opening block, unlock start, sector rotation, overnight risk.
-5. Assign action:
+8. Assign action:
    - `Avoid`: evidence is dirty, sell path active, unlock/holder risk dominates, or liquidity is hostile.
    - `Observe`: early anomaly, missing confirmation, or market structure incomplete.
    - `Reduce`: held position faces confirmed distribution or CEX inflow risk.
    - `Small test`: bounded-cost setup with verified sellability, low crowding, and clear stop.
    - `Follow only after confirmation`: early signal requires price/OI/on-chain confirmation.
-6. Output stop rules and update triggers.
+9. Output stop rules and update triggers.
 
 ## Core Rules
 
