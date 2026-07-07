@@ -50,13 +50,20 @@ Do not let social claims directly become trading actions. Convert social claims 
 - Treat CEX inflow from project/MM/early-holder paths as sell pressure until next-hop evidence clears it.
 - Treat CEX outflow into fresh wallets as possible accumulation, then wait for the next hop.
 - Track cold wallet to hot wallet to deposit wallet to sell venue paths. The path matters more than a single transfer.
+- Record the path stage explicitly: source wallet, exchange cold/hot/deposit wallet, fresh wallet cluster, gas source, sell wallet, quote-token recovery.
+- Batch-created wallets, multisig fan-out, gas priming, and repeated exchange deposit tests carry more weight than a single large transfer.
+- Deposit-port status matters. Closure, reopening, chain migration, and restored exchange deposits can change the sell-pressure window.
 - Do not mark a transfer as confirmed sell unless receipt or next-hop evidence shows quote-token recovery or exchange deposit with sell intent.
 - For low-cap tokens, combine FDV, MC, OI, funding, and CEX flow. A large OI relative to MC changes the risk surface.
+- If OI or volume is abnormal while chain movement is quiet, classify the setup as derivatives-led and avoid chain-only conclusions.
+- Track OI/MC and 24h volume/MC ratios for manipulated small caps; extreme ratios can reveal market-maker control before chain flow appears.
 - Do not chase the first anomaly. Early chain activity is a watchlist trigger, not an entry by itself.
 - If a token already had one manipulation cycle, keep monitoring it. Repeat cycles can occur after redistribution, wash volume, and OI reset.
 - For old large-cap or "regular army" tokens, weigh news, business catalysts, tech upgrades, sector rotation, and broad market structure more heavily than small on-chain flows.
 - Respect sector liquidity migration. When meme flow absorbs attention, reduce confidence in secondary Alpha/yield narratives unless fresh capital evidence appears.
 - For listing catalysts, record exact exchange, listing time, deposit status, market pair, and whether deposits opened before trading.
+- For monitored-tag or possible delisting tokens, ask whether the move is market-cap maintenance, index-weight defense, or forced liquidity work.
+- Treat small test deposits to exchange wallets as early sell-route probes when the same wallet has repeated this pattern historically.
 - For funding extremes, separate short squeeze risk from distribution risk. Negative funding with active CEX sell paths is different from negative funding with no sell path.
 - For opening-block snipes, do not follow until sellability, opening cohort, wallet source, venue class, and price capacity pass.
 - Preserve capital when evidence is incomplete. Missed upside is acceptable; ruin or trapped liquidity is unacceptable.
@@ -77,8 +84,11 @@ Use Chinese by default.
 - Setup:
 - 主导场所:
 - 钱包路径:
+- 路径阶段:
+- 集群/批量行为:
 - OI/funding:
 - FDV/MC/OI:
+- 事件窗口:
 - 解锁/持仓:
 
 **动作**
