@@ -54,8 +54,23 @@ Use these action labels consistently:
 - What exact event is happening?
 - Which wallet path changed?
 - Is it CEX inflow, CEX outflow, cold-to-hot, bridge, pool, unknown wallet, or contract movement?
+- What path stage is visible now: source wallet, CEX cold/hot/deposit, fresh cluster, gas source, sell venue, or quote recovery?
+- Is there batch behavior: new-wallet cluster, multisig fan-out, same deposit port, synchronized gas funding, or repeated test deposits?
 - Does OI/funding support or conflict with the chain read?
+- What are OI/MC, OI/FDV, and 24h volume/MC?
+- Is the setup chain-led, derivatives-led, listing/deposit-led, unlock-led, or sector-led?
 - Is FDV/MC/OI proportion abnormal?
 - Is there an unlock, claim, distribution, or deposit-status change?
+- Did deposit status change: closed, open, reopened, migrated chain, or unknown?
 - Is the token led by Alpha/CEX, DEX, old-coin narrative, meme flow, or unknown venue?
+- Is there monitored-tag, delisting, index-weight, or market-cap-maintenance pressure?
 - What evidence would flip the current action?
+
+## ElonKely-Derived Checks
+
+- Treat CEX path as a staged process and report the current stage before action language.
+- Upgrade urgency when cluster evidence appears: batch wallets, same source, same deposit port, same gas source, or synchronized timing.
+- Mark deposit reopenings after a large run-up as sell-window risk until local chain evidence clears it.
+- Label derivatives-led setups when OI or volume becomes abnormal before chain movement.
+- Keep dormant monitors for prior high-control tokens; restart attention when CEX flow, OI, gas priming, or sector flow returns.
+- Separate wash volume, Alpha brushing, maker inventory movement, organic buys, and confirmed sell pressure.
