@@ -64,6 +64,11 @@ Use these action labels consistently:
 - Did deposit status change: closed, open, reopened, migrated chain, or unknown?
 - Is the token led by Alpha/CEX, DEX, old-coin narrative, meme flow, or unknown venue?
 - Is there monitored-tag, delisting, index-weight, or market-cap-maintenance pressure?
+- What is the catalyst source: official, founder, exchange, KOL, media, community, or unknown?
+- For meme/news trades, what was the first-seen time, market cap at discovery, liquidity, holder quality, and current stage?
+- For tokenomics catalysts, is it burn, buyback, buyback-to-liquidity, fee donation, foundation, airdrop, initial float, or utility change?
+- Is a wallet label verified as founder/foundation/custody/MM/whale, or only inferred?
+- Which venue currently owns attention: Binance Alpha, Binance spot/perps, Binance Wallet, Coinbase, Korea CEX, SOL/Pump, Base, ASTER, or other?
 - What evidence would flip the current action?
 
 ## ElonKely-Derived Checks
@@ -74,3 +79,8 @@ Use these action labels consistently:
 - Label derivatives-led setups when OI or volume becomes abnormal before chain movement.
 - Keep dormant monitors for prior high-control tokens; restart attention when CEX flow, OI, gas priming, or sector flow returns.
 - Separate wash volume, Alpha brushing, maker inventory movement, organic buys, and confirmed sell pressure.
+- Treat meme/news triggers as speed trades with explicit exit discipline and stage labels.
+- Treat listing, seed tag, monitoring tag, delisting, and wallet support as a calendar queue requiring exact timestamps and pressure checks.
+- Label tokenomics mechanisms before judging direction; burn, buyback, airdrop, initial float, and foundation formation create different risks.
+- Verify identity labels before using founder, foundation, custody, MM, whale, or KOL behavior as evidence.
+- Track venue rotation so weak signals are downgraded when attention has migrated elsewhere.
