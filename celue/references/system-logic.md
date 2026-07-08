@@ -1,6 +1,6 @@
 # Current System Logic
 
-This reference summarizes the user's current sniper/Alpha monitoring system as of 2026-07-07.
+This reference summarizes the user's current sniper/Alpha monitoring system as of 2026-07-08.
 
 ## Operating Principle
 
@@ -37,7 +37,9 @@ Older project rules remain active until this file explicitly changes them. New r
 - Holder concentration watch separates raw holder concentration from infrastructure-adjusted concentration.
 - Surf auxiliary market watch supplies external market context.
 - External auxiliary readiness tracks Coinglass/CoinAnk/GMGN/DeBot status; unvalidated sources remain context-only.
-- Daily report combines watchlist, opening, intraday, OI, price, holders, external sources, and verification.
+- External auxiliary live probe checks configured Coinglass/CoinAnk/GMGN credentials and read-only probe endpoints before those sources are promoted.
+- Position/cost watch compares local position plans against current price, OI/funding, intraday flow, holders, and external context.
+- Daily report combines watchlist, opening, intraday, OI, price, holders, external sources, position/cost state, and verification.
 
 ## Project Runtime Evidence
 
@@ -50,6 +52,8 @@ Use project runtime files for current state:
 - `output/perp_oi_funding_watch/latest.*`: Binance/OKX/Bybit OI and funding context.
 - `output/alpha_price_momentum_watch/latest.*`: Binance Alpha price, volume, venue, and book context.
 - `output/alpha_holder_concentration_watch/latest.*`: holder concentration after infrastructure exclusion.
+- `output/external_aux_live_probe/latest.*`: read-only validation status for Coinglass/CoinAnk/GMGN/Surf external sources.
+- `output/position_cost_watch/latest.*`: local position/cost actions, stop/take-profit checks, and paper trade states.
 - `output/telegram_signals/` and `output/telegram_user_signals/`: social discovery ingestion, still below verified evidence.
 - `output/sniper_engine/verification_report.md`: local or server verification status.
 
@@ -62,6 +66,9 @@ Do not store these current runtime states inside the skill. Read them from the p
 - Current system does not sign transactions.
 - Current system does not execute trades.
 - External tools are context until live-probe validated.
+- API keys belong in local `.env.local` files only; never store them in this skill, project docs, git-tracked config, chat memory, or reports.
+- Real positions belong in the git-ignored `config/user_positions.json`; only template examples may be tracked.
+- Position/cost output is advisory. It can trigger `Reduce`, `Observe`, or `Small test` language, but it cannot authorize automatic execution.
 - Do not treat CEX hot/deposit wallets, contracts, routers, bridges, LP managers, quote tokens, or exchange aggregators as funding-cluster parents.
 - Do not call a project/MM transfer a confirmed sell without next-hop evidence or quote recovery.
 - For Pancake v4/Infinity, follow wording requires sellability and recovery-rate gate plus opening-block/cohort/venue/distribution rules.
@@ -102,6 +109,8 @@ Use these action labels consistently:
 - Who buys after the user: official campaign, CEX/Alpha flow, MM, whale, KOL/community, retail, or arbitrage?
 - What is the user's cost basis versus known accumulation cost, support range, and realistic market-cap ceiling?
 - What evidence would flip the current action?
+- Have Coinglass/CoinAnk/GMGN sources passed local live probes, or are they still context-only?
+- If the user holds exposure, what are entry, size, max exposure, stop, take-profit, thesis, invalidation, and time stop?
 
 ## ElonKely-Derived Checks
 
