@@ -57,6 +57,13 @@ python3 ~/.codex/skills/project-continuity/scripts/project_continuity.py audit \
 
 Then read the listed project-memory files, inspect `git status`, and verify current runtime evidence. Do not replay completed operations.
 
+## Safe Recovery Reads
+
+- Read only paths listed in the resume packet and the specific Git-tracked files needed for the task.
+- Never recursively search hidden or untracked locations during recovery. Denylist `.deploy`, `.env*`, private-key files, credential stores, and session files.
+- Put secret-free deployment metadata in a tracked runbook or entrypoint and list it in `context_files`; do not discover connection details with a broad `rg` or `find`.
+- If tool output contains a private-key block or a credential value, stop, do not reproduce it, rotate the affected credential, archive the task as unsafe, and restart recovery in a fresh task.
+
 ## Scheduled Guard
 
 Register each managed or observed project once, then schedule `check-all --notify` through one central Codex automation. The CLI deduplicates identical reminders and writes a checkpoint when warning state changes.

@@ -120,6 +120,8 @@ class ProjectContinuityTest(unittest.TestCase):
         self.assertEqual(status, 0)
         self.assertIn("checkpoint_hash_valid: `True`", resume)
         self.assertIn("thread-test", resume)
+        self.assertIn("## Recovery Safety", resume)
+        self.assertIn("`.deploy`", resume)
 
         audit, audit_status = PC.audit_project(self.config)
         self.assertEqual(audit_status, 0, audit)
@@ -201,6 +203,46 @@ class ProjectContinuityTest(unittest.TestCase):
             suppressed = PC.check_project(self.config, notify=True, auto_checkpoint=False)
         self.assertTrue(delivered["notification"]["delivered"])
         self.assertFalse(suppressed["notification"]["needed"])
+
+    def test_private_key_marker_rejects_active_task(self) -> None:
+        first = PC.check_project(self.config, notify=False, auto_checkpoint=True)
+        self.assertIsNotNone(first["checkpoint"])
+        with self.rollout.open("a", encoding="utf-8") as handle:
+            handle.write(
+                json.dumps(
+                    {
+                        "type": "response_item",
+                        "payload": {
+                            "type": "custom_tool_call_output",
+                            "output": [
+                                {
+                                    "type": "input_text",
+                                    "text": (
+                                        "-----BEGIN OPENSSH PRIVATE KEY-----\n"
+                                        + "A" * 80
+                                        + "\n-----END OPENSSH PRIVATE KEY-----\n"
+                                        + "NODEREAL_API_KEY="
+                                        + "B" * 32
+                                    ),
+                                }
+                            ],
+                        },
+                    }
+                )
+                + "\n"
+            )
+        result = PC.check_project(self.config, notify=False, auto_checkpoint=True)
+        self.assertEqual(result["severity"], "error")
+        self.assertIsNone(result["checkpoint"])
+        self.assertEqual(result["reasons"][0]["metric"], "secret_markers")
+        self.assertEqual(
+            result["metrics"]["secret_markers"],
+            ["credential_assignment", "open_ssh_private_key"],
+        )
+        audit, status = PC.audit_project(self.config)
+        self.assertEqual(status, 1)
+        secret_check = next(row for row in audit["checks"] if row["name"] == "active rollout secret markers")
+        self.assertFalse(secret_check["ok"])
 
 
 if __name__ == "__main__":

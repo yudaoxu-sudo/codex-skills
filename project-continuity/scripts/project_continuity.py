@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import shutil
 import sqlite3
 import subprocess
@@ -20,6 +21,35 @@ CONFIG_SCHEMA = "project_continuity_config.v1"
 REGISTRY_SCHEMA = "project_continuity_registry.v1"
 SEVERITY_ORDER = {"healthy": 0, "warning": 1, "rotate_required": 2, "error": 3}
 LAYERS = {"raw", "normalized", "curated", "analysis", "result"}
+HIGH_CONFIDENCE_PRIVATE_KEY_PATTERNS = {
+    "open_ssh_private_key": re.compile(
+        r"-----BEGIN OPENSSH PRIVATE KEY-----[^\n]*\n(?:[^\n]*\n){1,80}?[^\n]*-----END OPENSSH PRIVATE KEY-----"
+    ),
+    "rsa_private_key": re.compile(
+        r"-----BEGIN RSA PRIVATE KEY-----[^\n]*\n(?:[^\n]*\n){1,200}?[^\n]*-----END RSA PRIVATE KEY-----"
+    ),
+    "ec_private_key": re.compile(
+        r"-----BEGIN EC PRIVATE KEY-----[^\n]*\n(?:[^\n]*\n){1,80}?[^\n]*-----END EC PRIVATE KEY-----"
+    ),
+    "generic_private_key": re.compile(
+        r"-----BEGIN PRIVATE KEY-----[^\n]*\n(?:[^\n]*\n){1,200}?[^\n]*-----END PRIVATE KEY-----"
+    ),
+}
+CREDENTIAL_ASSIGNMENT_PATTERN = re.compile(
+    r"(?m)(?:^|:)"
+    r"[A-Z][A-Z0-9_]*(?:API_KEY|TOKEN|SECRET|PASSWORD|SESSION)="
+    r"(?P<value>[^\s\"']{16,})$"
+)
+
+
+def flatten_tool_output(value: Any) -> str:
+    if isinstance(value, str):
+        return value
+    if isinstance(value, list):
+        return "\n".join(flatten_tool_output(item) for item in value)
+    if isinstance(value, dict):
+        return "\n".join(flatten_tool_output(item) for item in value.values())
+    return str(value)
 
 
 def utc_now() -> str:
@@ -70,6 +100,37 @@ def sha256_file(path: Path) -> str:
 def content_hash(payload: Any) -> str:
     encoded = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
     return hashlib.sha256(encoded).hexdigest()
+
+
+def high_confidence_secret_markers(path: Path) -> list[str]:
+    if not path.is_file():
+        return []
+    found: set[str] = set()
+    with path.open("r", encoding="utf-8", errors="replace") as handle:
+        for line in handle:
+            try:
+                row = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            payload = row.get("payload") or {}
+            if row.get("type") != "response_item" or payload.get("type") not in {
+                "custom_tool_call_output",
+                "function_call_output",
+            }:
+                continue
+            text = flatten_tool_output(payload.get("output", ""))
+            for name, pattern in HIGH_CONFIDENCE_PRIVATE_KEY_PATTERNS.items():
+                if pattern.search(text):
+                    found.add(name)
+            for match in CREDENTIAL_ASSIGNMENT_PATTERN.finditer(text):
+                value = match.group("value")
+                if not value.startswith(("$", "<", "{", "[")) and value.lower() not in {
+                    "replace_me",
+                    "changeme",
+                    "placeholder",
+                }:
+                    found.add("credential_assignment")
+    return sorted(found)
 
 
 def validate_config(payload: Any, path: Path) -> dict[str, Any]:
@@ -352,6 +413,7 @@ def read_active_threads(config: dict[str, Any], store: sqlite3.Connection) -> li
             continue
         rollout = expanded_path(row["rollout_path"])
         counts = rollout_counts(rollout, store, config["project_id"])
+        secret_markers = high_confidence_secret_markers(rollout)
         title_preview = str(row["title"] or "").splitlines()[0][:160]
         result.append(
             {
@@ -364,6 +426,7 @@ def read_active_threads(config: dict[str, Any], store: sqlite3.Connection) -> li
                 "turn_count": counts["turn_count"],
                 "compaction_count": counts["compaction_count"],
                 "parse_errors": counts["parse_errors"],
+                "secret_markers": secret_markers,
                 "updated_at_epoch": int(row["updated_at"] or 0),
                 "archived": bool(row["archived"]),
             }
@@ -372,6 +435,20 @@ def read_active_threads(config: dict[str, Any], store: sqlite3.Connection) -> li
 
 
 def evaluate_thread(metrics: dict[str, Any], thresholds: dict[str, Any]) -> dict[str, Any]:
+    secret_markers = list(metrics.get("secret_markers") or [])
+    if secret_markers:
+        reasons = [{"metric": "secret_markers", "value": len(secret_markers), "threshold": 0}]
+        return {
+            "severity": "error",
+            "reasons": reasons,
+            "fingerprint": content_hash(
+                {
+                    "conversation_id": metrics.get("conversation_id"),
+                    "severity": "error",
+                    "secret_markers": secret_markers,
+                }
+            ),
+        }
     warning_reasons = []
     rotate_reasons = []
     for metric in ("log_bytes", "tokens_used", "compaction_count", "turn_count"):
@@ -601,6 +678,13 @@ def render_resume_packet(snapshot: dict[str, Any]) -> str:
     lines.extend(
         [
             "",
+            "## Recovery Safety",
+            "",
+            "1. Read only the listed context/runtime files and narrowly selected Git-tracked source.",
+            "2. Do not recursively search hidden or untracked paths such as `.deploy`, `.env*`, private-key files, credential stores, or session files.",
+            "3. Use listed secret-free runbooks or deployment entrypoints for connection metadata.",
+            "4. If secret-like output appears, stop without reproducing it, rotate the credential, and reject this task for continued use.",
+            "",
             "## Resume Procedure",
             "",
             "1. Read the required context files listed above.",
@@ -775,7 +859,9 @@ def notify_macos(config: dict[str, Any], check: dict[str, Any]) -> bool:
         return False
     severity = check["severity"]
     metrics = check["metrics"]
-    if severity == "rotate_required":
+    if severity == "error":
+        message = f"{config['name']} 对话检测到高置信度敏感输出，请立即停止使用并轮换凭证。"
+    elif severity == "rotate_required":
         message = f"{config['name']} 对话达到轮换阈值，请使用最新恢复包新建对话。"
     else:
         message = (
@@ -824,7 +910,7 @@ def maybe_record_notification(
 
 
 def should_checkpoint(connection: sqlite3.Connection, config: dict[str, Any], check: dict[str, Any]) -> bool:
-    if check["severity"] == "healthy":
+    if check["severity"] in {"healthy", "error"}:
         return False
     latest = latest_checkpoint(connection, config["project_id"])
     if not latest:
@@ -859,7 +945,7 @@ def check_project(
                 "error": "no active Codex thread found for project_root",
             }
         else:
-            metrics = threads[0]
+            metrics = next((row for row in threads if row.get("secret_markers")), threads[0])
             evaluation = evaluate_thread(metrics, config["thresholds"])
             check = persist_thread_check(connection, config, metrics, evaluation)
             checkpoint = None
@@ -1043,6 +1129,16 @@ def audit_project(config_path_value: str | Path) -> tuple[dict[str, Any], int]:
             row = file_snapshot(entry, config_path)
             if row["required"]:
                 checks.append({"name": f"required context: {row['role']}", "ok": row["exists"], "detail": row["path"]})
+        active_threads = read_active_threads(config, connection)
+        exposed = [row for row in active_threads if row.get("secret_markers")]
+        marker_names = sorted({name for row in exposed for name in row.get("secret_markers", [])})
+        checks.append(
+            {
+                "name": "active rollout secret markers",
+                "ok": not exposed,
+                "detail": f"conversations={len(exposed)}, markers={','.join(marker_names) or 'none'}",
+            }
+        )
         node_count = connection.execute(
             "SELECT COUNT(*) FROM lineage_nodes WHERE project_id=?", (config["project_id"],)
         ).fetchone()[0]

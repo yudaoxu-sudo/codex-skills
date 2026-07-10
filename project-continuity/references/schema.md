@@ -23,7 +23,8 @@ Each project owns a tracked `config/project_continuity.json`. Runtime databases 
   "runtime_root": "~/Documents/Codex/runtime/project-continuity",
   "registry_path": "~/Documents/Codex/agent/project-continuity-projects.json",
   "context_files": [
-    {"path": "~/Documents/Codex/projects/example.md", "role": "project_memory", "required": true}
+    {"path": "~/Documents/Codex/projects/example.md", "role": "project_memory", "required": true},
+    {"path": "docs/operator_runbook.md", "role": "operator_runbook", "required": false}
   ],
   "health_files": [
     {"path": "output/runtime_health/latest.json", "role": "runtime_health", "required": false}
@@ -44,6 +45,8 @@ Each project owns a tracked `config/project_continuity.json`. Runtime databases 
 ```
 
 Relative context and health paths resolve from the config directory. Prefer absolute project and memory paths for cross-thread reliability.
+
+Context files must be secret-free. Recovery tasks should use listed files and narrowly selected Git-tracked source; hidden deployment directories, `.env*`, private keys, credential stores, and session files are outside the recovery read boundary.
 
 ## Adoption Levels
 
