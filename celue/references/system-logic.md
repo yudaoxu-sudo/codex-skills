@@ -32,7 +32,7 @@ Older project rules remain active until this file explicitly changes them. New r
 - Prelaunch watch tracks known launch windows.
 - Opening block watch scans first transfers, swaps, bribes, first buyer cohorts, sellability, and buyer traces.
 - Intraday flow watch scans large buys/sells, runtime CEX deposit candidates, and CEX gas priming.
-- Perp/OI/funding watch covers Binance/OKX/Bybit public derivatives context.
+- Perp/OI/funding watch covers Binance/OKX/Bybit public derivatives context, normalizes actual settlement intervals to an 8-hour basis, and separates current predicted funding from settled 24-hour history.
 - Price momentum watch covers Binance Alpha price/depth changes.
 - Holder concentration watch separates raw holder concentration from infrastructure-adjusted concentration.
 - Surf auxiliary market watch supplies external market context.
@@ -71,6 +71,7 @@ Do not store these current runtime states inside the skill. Read them from the p
 - API keys belong in local `.env.local` files only; never store them in this skill, project docs, git-tracked config, chat memory, or reports.
 - Real positions belong in the git-ignored `config/user_positions.json`; only template examples may be tracked.
 - Position/cost output is advisory. It can trigger `Reduce`, `Observe`, or `Small test` language, but it cannot authorize automatic execution.
+- Compare funding across venues only after interval normalization. Separate current predicted funding, latest settled funding, 24h average normalized funding, and 24h cumulative funding; funding history alone cannot authorize a buy.
 - Treat monitor silence as healthy only when runtime heartbeat, core output freshness, and verification status are healthy. Stale output cannot support a current trading conclusion.
 - Do not treat CEX hot/deposit wallets, contracts, routers, bridges, LP managers, quote tokens, or exchange aggregators as funding-cluster parents.
 - Do not call a project/MM transfer a confirmed sell without next-hop evidence or quote recovery.
@@ -95,6 +96,7 @@ Use these action labels consistently:
 - What path stage is visible now: source wallet, CEX cold/hot/deposit, fresh cluster, gas source, sell venue, or quote recovery?
 - Is there batch behavior: new-wallet cluster, multisig fan-out, same deposit port, synchronized gas funding, or repeated test deposits?
 - Does OI/funding support or conflict with the chain read?
+- Is funding pressure current, sustained over 24h, mixed, or newly flipped after 8-hour normalization?
 - What are OI/MC, OI/FDV, and 24h volume/MC?
 - Is the setup chain-led, derivatives-led, listing/deposit-led, unlock-led, or sector-led?
 - Is FDV/MC/OI proportion abnormal?
