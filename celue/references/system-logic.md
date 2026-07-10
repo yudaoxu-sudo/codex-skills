@@ -39,6 +39,7 @@ Older project rules remain active until this file explicitly changes them. New r
 - External auxiliary readiness tracks Coinglass/CoinAnk/GMGN/DeBot status; unvalidated sources remain context-only.
 - External auxiliary live probe checks configured Coinglass/CoinAnk/GMGN credentials and read-only probe endpoints before those sources are promoted.
 - Position/cost watch compares local position plans against current price, OI/funding, intraday flow, holders, and external context.
+- Runtime health records failed monitor steps, stale core outputs, verification failures, and the last completed server cycle; an independent watchdog sends only failure, changed-failure, persistent-failure, and recovery notifications.
 - Daily report combines watchlist, opening, intraday, OI, price, holders, external sources, position/cost state, and verification.
 
 ## Project Runtime Evidence
@@ -54,6 +55,7 @@ Use project runtime files for current state:
 - `output/alpha_holder_concentration_watch/latest.*`: holder concentration after infrastructure exclusion.
 - `output/external_aux_live_probe/latest.*`: read-only validation status for Coinglass/CoinAnk/GMGN/Surf external sources.
 - `output/position_cost_watch/latest.*`: local position/cost actions, stop/take-profit checks, and paper trade states.
+- `output/runtime_health/latest.*` and `output/runtime_health/last_cycle.json`: current cycle health, failed steps, output freshness, notification status, and watchdog heartbeat.
 - `output/telegram_signals/` and `output/telegram_user_signals/`: social discovery ingestion, still below verified evidence.
 - `output/sniper_engine/verification_report.md`: local or server verification status.
 
@@ -69,6 +71,7 @@ Do not store these current runtime states inside the skill. Read them from the p
 - API keys belong in local `.env.local` files only; never store them in this skill, project docs, git-tracked config, chat memory, or reports.
 - Real positions belong in the git-ignored `config/user_positions.json`; only template examples may be tracked.
 - Position/cost output is advisory. It can trigger `Reduce`, `Observe`, or `Small test` language, but it cannot authorize automatic execution.
+- Treat monitor silence as healthy only when runtime heartbeat, core output freshness, and verification status are healthy. Stale output cannot support a current trading conclusion.
 - Do not treat CEX hot/deposit wallets, contracts, routers, bridges, LP managers, quote tokens, or exchange aggregators as funding-cluster parents.
 - Do not call a project/MM transfer a confirmed sell without next-hop evidence or quote recovery.
 - For Pancake v4/Infinity, follow wording requires sellability and recovery-rate gate plus opening-block/cohort/venue/distribution rules.
