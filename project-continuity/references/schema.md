@@ -3,10 +3,11 @@
 ## Contents
 
 1. Configuration
-2. Threshold Semantics
-3. SQLite Tables
-4. Lineage
-5. Deletion Scope
+2. Adoption Levels
+3. Threshold Semantics
+4. SQLite Tables
+5. Lineage
+6. Deletion Scope
 
 ## Configuration
 
@@ -43,6 +44,16 @@ Each project owns a tracked `config/project_continuity.json`. Runtime databases 
 ```
 
 Relative context and health paths resolve from the config directory. Prefer absolute project and memory paths for cross-thread reliability.
+
+## Adoption Levels
+
+| Level | Intended projects | Required state |
+| --- | --- | --- |
+| `baseline` | Durable but low-risk work | Concise project memory, open items, external artifacts, Git checkpoints where applicable |
+| `managed` | Long-running, important, automated, multi-conversation, or costly-to-reconstruct work | Baseline plus config, SQLite, registry, checkpoints, resume packets, and audits |
+| `observed` | Production work where incorrect results can cause material harm | Managed plus runtime health evidence, lineage, and quality checks |
+
+Only managed and observed projects belong in the central scheduled registry. Promote a project when its activity, operational risk, or reconstruction cost grows.
 
 ## Threshold Semantics
 
