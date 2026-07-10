@@ -57,6 +57,12 @@ python3 ~/.codex/skills/project-continuity/scripts/project_continuity.py audit \
 
 Then read the listed project-memory files, inspect `git status`, and verify current runtime evidence. Do not replay completed operations.
 
+## Project-Level Acceptance
+
+Managed and observed projects should expose one deterministic acceptance command that combines continuity status, checkpoint hash, audit result, Git state, required recovery files, denied tracked paths, and project runtime health. Run it before rotation and again in the recovered conversation.
+
+Keep operator and production schedules separate. A server business cron may publish a secret-free heartbeat for the acceptance command to read; it must not depend on the local Codex state database or run the continuity CLI. Remote probes must use fixed, documented paths and pass credential file paths to their client process without reading credential contents.
+
 ## Safe Recovery Reads
 
 - Read only paths listed in the resume packet and the specific Git-tracked files needed for the task.
@@ -96,6 +102,7 @@ Run `purge` only after the user explicitly confirms the exact token returned by 
 
 - Raw tool output larger than a concise answer belongs in an artifact, not chat.
 - Every checkpoint records `project_id`, `conversation_id`, hashes, git state, context files, health files, and lineage edges.
+- Project acceptance reports should be generated artifacts and must contain summaries, IDs, hashes, counts, and statuses only.
 - Generated Wiki/context packs must point to exact evidence paths and remain small.
 - Do not store credentials, cookies, private keys, seed phrases, access tokens, or raw private conversations.
 - Read `references/schema.md` when creating a config, changing thresholds, or extending the lineage model.

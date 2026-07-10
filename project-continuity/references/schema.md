@@ -29,6 +29,13 @@ Each project owns a tracked `config/project_continuity.json`. Runtime databases 
   "health_files": [
     {"path": "output/runtime_health/latest.json", "role": "runtime_health", "required": false}
   ],
+  "acceptance": {
+    "schema": "example_project_acceptance_policy.v1",
+    "output_dir": "output/project_continuity_acceptance",
+    "tracked_required_paths": ["docs/operator_runbook.md"],
+    "denied_git_globs": [".deploy/**", ".env", ".env.*", "**/*.pem", "**/*.key", "**/*.session"],
+    "denied_git_exceptions": [".env.example"]
+  },
   "thresholds": {
     "log_bytes_warning": 52428800,
     "log_bytes_rotate": 104857600,
@@ -47,6 +54,8 @@ Each project owns a tracked `config/project_continuity.json`. Runtime databases 
 Relative context and health paths resolve from the config directory. Prefer absolute project and memory paths for cross-thread reliability.
 
 Context files must be secret-free. Recovery tasks should use listed files and narrowly selected Git-tracked source; hidden deployment directories, `.env*`, private keys, credential stores, and session files are outside the recovery read boundary.
+
+An optional project-specific `acceptance` block defines the deterministic recovery gate. Keep its output outside Git, require critical runbooks and wrappers to be tracked, reject secret/session globs from tracked files, and read remote health through fixed secret-free paths. Any tracked exception must name one exact reviewed template path; never exempt a directory or wildcard. The project owns the exact acceptance schema because runtime evidence differs by domain.
 
 ## Adoption Levels
 
