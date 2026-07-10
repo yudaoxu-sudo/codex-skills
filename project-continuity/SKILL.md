@@ -1,9 +1,11 @@
 ---
 name: project-continuity
-description: Keep long-running Codex projects recoverable across conversations with SQLite lineage, thread-size thresholds, deduplicated reminders, verified checkpoints, compact resume packets, and scoped purge plans. Use when the user mentions long conversations, context compression, task logs, seamless handoff, changing chat windows, project memory, checkpoint/resume, watcher agents, deleting a conversation/project memory, or asks Codex to warn before a task becomes too large.
+description: Long-conversation continuity skill, displayed as 长文方案. Keep long-running Codex projects recoverable across conversations with SQLite lineage, thread-size thresholds, deduplicated reminders, verified checkpoints, compact resume packets, and scoped purge plans. Use when the user says 长文方案, mentions long conversations, context compression, task logs, seamless handoff, changing chat windows, project memory, checkpoint/resume, watcher agents, deleting a conversation/project memory, or asks Codex to warn before a task becomes too large.
 ---
 
-# Project Continuity
+# 长文方案
+
+Internal skill ID: `project-continuity`.
 
 Use the deterministic CLI in `scripts/project_continuity.py`. Keep raw chat content out of the continuity database; store paths, hashes, metrics, checkpoints, and lineage IDs.
 

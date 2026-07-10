@@ -1,4 +1,4 @@
 interface:
-  display_name: "Project Continuity"
-  short_description: "Track project lineage and rotate long Codex tasks safely"
-  default_prompt: "Use $project-continuity to check this task, checkpoint the project, and prepare a clean resume packet."
+  display_name: "长文方案"
+  short_description: "检查长任务阈值并安全切换、恢复项目"
+  default_prompt: "使用 $project-continuity（长文方案）检查当前任务，生成已验证的恢复包，并安全切换到新任务。"
