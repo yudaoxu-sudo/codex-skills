@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Continuity"
+  short_description: "Track project lineage and rotate long Codex tasks safely"
+  default_prompt: "Use $project-continuity to check this task, checkpoint the project, and prepare a clean resume packet."
