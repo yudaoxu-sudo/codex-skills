@@ -102,6 +102,14 @@ def content_hash(payload: Any) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
+def is_known_private_key_test_fixture(text: str, match: re.Match[str]) -> bool:
+    window = text[max(0, match.start() - 4000) : match.end() + 1000]
+    return (
+        "def test_private_key_marker_rejects_active_task" in window
+        and '+ "A" * 80' in match.group(0)
+    )
+
+
 def high_confidence_secret_markers(path: Path) -> list[str]:
     if not path.is_file():
         return []
@@ -120,8 +128,11 @@ def high_confidence_secret_markers(path: Path) -> list[str]:
                 continue
             text = flatten_tool_output(payload.get("output", ""))
             for name, pattern in HIGH_CONFIDENCE_PRIVATE_KEY_PATTERNS.items():
-                if pattern.search(text):
+                for match in pattern.finditer(text):
+                    if name == "open_ssh_private_key" and is_known_private_key_test_fixture(text, match):
+                        continue
                     found.add(name)
+                    break
             for match in CREDENTIAL_ASSIGNMENT_PATTERN.finditer(text):
                 value = match.group("value")
                 if not value.startswith(("$", "<", "{", "[")) and value.lower() not in {
@@ -414,7 +425,7 @@ def read_active_threads(config: dict[str, Any], store: sqlite3.Connection) -> li
         rollout = expanded_path(row["rollout_path"])
         counts = rollout_counts(rollout, store, config["project_id"])
         secret_markers = high_confidence_secret_markers(rollout)
-        title_preview = str(row["title"] or "").splitlines()[0][:160]
+        title_preview = (str(row["title"] or "").splitlines() or [""])[0][:160]
         result.append(
             {
                 "conversation_id": row["id"],

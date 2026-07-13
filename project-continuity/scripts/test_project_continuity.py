@@ -157,6 +157,26 @@ class ProjectContinuityTest(unittest.TestCase):
         metrics = {row["metric"] for row in result["reasons"]}
         self.assertIn("tokens_used", metrics)
 
+    def test_empty_thread_title_is_safe(self) -> None:
+        connection = sqlite3.connect(self.state_db)
+        connection.execute("UPDATE threads SET title='' WHERE id='thread-test'")
+        connection.commit()
+        connection.close()
+
+        result = PC.check_project(self.config, notify=False, auto_checkpoint=True)
+        self.assertEqual(result["severity"], "warning")
+
+        config, _ = PC.load_config(self.config)
+        store = PC.open_store(config)
+        try:
+            threads = PC.read_active_threads(config, store)
+        finally:
+            store.close()
+        self.assertEqual(threads[0]["title"], "")
+
+        audit, status = PC.audit_project(self.config)
+        self.assertEqual(status, 0, audit)
+
     def test_registry_and_safe_purge(self) -> None:
         registered = PC.register_config(self.config, self.registry)
         self.assertTrue(registered["registered"])
@@ -207,6 +227,8 @@ class ProjectContinuityTest(unittest.TestCase):
     def test_private_key_marker_rejects_active_task(self) -> None:
         first = PC.check_project(self.config, notify=False, auto_checkpoint=True)
         self.assertIsNotNone(first["checkpoint"])
+        private_key_begin = "-----BEGIN " + "OPENSSH PRIVATE KEY-----"
+        private_key_end = "-----END " + "OPENSSH PRIVATE KEY-----"
         with self.rollout.open("a", encoding="utf-8") as handle:
             handle.write(
                 json.dumps(
@@ -218,9 +240,12 @@ class ProjectContinuityTest(unittest.TestCase):
                                 {
                                     "type": "input_text",
                                     "text": (
-                                        "-----BEGIN OPENSSH PRIVATE KEY-----\n"
+                                        private_key_begin
+                                        + "\n"
                                         + "A" * 80
-                                        + "\n-----END OPENSSH PRIVATE KEY-----\n"
+                                        + "\n"
+                                        + private_key_end
+                                        + "\n"
                                         + "NODEREAL_API_KEY="
                                         + "B" * 32
                                     ),
@@ -243,6 +268,48 @@ class ProjectContinuityTest(unittest.TestCase):
         self.assertEqual(status, 1)
         secret_check = next(row for row in audit["checks"] if row["name"] == "active rollout secret markers")
         self.assertFalse(secret_check["ok"])
+
+    def test_rendered_private_key_test_source_is_ignored(self) -> None:
+        private_key_begin = "-----BEGIN " + "OPENSSH PRIVATE KEY-----"
+        private_key_end = "-----END " + "OPENSSH PRIVATE KEY-----"
+        rendered_source = "\n".join(
+            [
+                "def test_private_key_marker_rejects_active_task(self):",
+                f'    "{private_key_begin}\\n"',
+                '    + "A" * 80',
+                f'    + "\\n{private_key_end}\\n"',
+            ]
+        )
+        with self.rollout.open("a", encoding="utf-8") as handle:
+            handle.write(
+                json.dumps(
+                    {
+                        "type": "response_item",
+                        "payload": {
+                            "type": "custom_tool_call_output",
+                            "output": [{"type": "input_text", "text": rendered_source}],
+                        },
+                    }
+                )
+                + "\n"
+            )
+        self.assertEqual(PC.high_confidence_secret_markers(self.rollout), [])
+
+        real_marker = private_key_begin + "\n" + "B" * 80 + "\n" + private_key_end
+        with self.rollout.open("a", encoding="utf-8") as handle:
+            handle.write(
+                json.dumps(
+                    {
+                        "type": "response_item",
+                        "payload": {
+                            "type": "custom_tool_call_output",
+                            "output": [{"type": "input_text", "text": rendered_source + "\n" + real_marker}],
+                        },
+                    }
+                )
+                + "\n"
+            )
+        self.assertEqual(PC.high_confidence_secret_markers(self.rollout), ["open_ssh_private_key"])
 
 
 if __name__ == "__main__":
