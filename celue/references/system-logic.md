@@ -31,7 +31,7 @@ Older project rules remain active until this file explicitly changes them. New r
 - Telegram/project ingestion writes deduped projects into the project registry.
 - Prelaunch watch tracks known launch windows.
 - Opening block watch scans first transfers, swaps, bribes, first buyer cohorts, sellability, and buyer traces.
-- Intraday flow watch scans large buys/sells, runtime CEX deposit candidates, and CEX gas priming.
+- Intraday flow watch scans large buys/sells, runtime CEX deposit candidates, CEX gas priming, and report-only near-equal CEX withdrawal-cluster candidates whose direction remains `unknown`.
 - Perp/OI/funding watch covers Binance/OKX/Bybit public derivatives context, normalizes actual settlement intervals to an 8-hour basis, and separates current predicted funding from settled 24-hour history.
 - Price momentum watch covers Binance Alpha price/depth changes.
 - Holder concentration watch separates raw holder concentration from infrastructure-adjusted concentration.

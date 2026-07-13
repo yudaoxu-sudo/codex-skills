@@ -157,13 +157,15 @@ Source: `https://x.com/Miles082510/status/2072573579594756266`.
 
 The current strategy already covers staged CEX paths, next-hop checks, quote recovery, fresh-wallet clusters, gas priming, wallet roles, OI/funding confirmation, buyer stack, position cost, take-profit, and time-stop questions. Miles adds richer CEX-withdrawal clustering and operator-level phase conflict.
 
-Project runtime gap:
+Project runtime integration:
 
-- `alpha_intraday_flow_watch.py` covers CEX deposit candidates and gas priming, and lacks a symmetric `cex_withdrawal_cluster` evidence object.
-- `alpha_holder_concentration_watch.py` lacks persistent role-weighted cluster inventory history.
-- `position_cost_watch.py` does not derive `holding_days` or `time_stop_state` from `opened_at`.
+- `alpha_intraday_flow_watch.py` now emits a report-only `cex_withdrawal_cluster` candidate from fetched token-transfer logs. The first gate requires a tracked global `cex_hot_wallet`, at least eight unlabeled recipients, a maximum 1,200-block span, recipient-total CV at or below 0.20, and at least 10,000 quote units when a context price exists; 100,000 token units is only the no-price fallback.
+- The candidate fixes `direction=unknown`, `action=Observe`, and stays outside trade-signal and Telegram-alert paths. Freshness, exact elapsed time, log-window completeness, unknown-contract filtering, common gas, next hop, redeposit, DEX execution, quote recovery, entity linkage, and operator conflict remain unresolved gates.
+- Regression fixtures cover equal fan-out, unequal retail withdrawals, known infrastructure routing, `cex_deposit` source exclusion, low-value fan-out, excessive block span, and preservation of an existing bearish CEX-inflow signal.
+- `alpha_holder_concentration_watch.py` still lacks persistent role-weighted cluster inventory history.
+- `position_cost_watch.py` still does not derive `holding_days` or `time_stop_state` from `opened_at`.
 
-The next safe project unit is a read-only `cex_withdrawal_cluster` object with fixtures for equal-tranche batches, ordinary retail withdrawals, exchange internal routing, and concurrent CEX outflow plus verified distribution.
+The next safe project unit is forward-sample collection and next-hop labeling for report-only candidates. Operator-phase inference remains deferred until entity linkage and balance history are independently verified.
 
 ## Reference-Only Material
 
