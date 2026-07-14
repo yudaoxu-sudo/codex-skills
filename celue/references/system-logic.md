@@ -38,7 +38,7 @@ Older project rules remain active until this file explicitly changes them. New r
 - Surf auxiliary market watch supplies external market context.
 - External auxiliary readiness tracks Coinglass/CoinAnk/GMGN/DeBot status; unvalidated sources remain context-only.
 - External auxiliary live probe checks configured Coinglass/CoinAnk/GMGN credentials and read-only probe endpoints before those sources are promoted.
-- Position/cost watch compares local position plans against current price, OI/funding, intraday flow, holders, and external context.
+- Position/cost watch compares local position plans against current price, OI/funding, intraday flow, holders, and external context. It also derives `holding_days` and an independent `time_stop_state` from timezone-aware `opened_at` plus optional per-position `time_stop_days`.
 - Runtime health records failed monitor steps, stale core outputs, verification failures, and the last completed server cycle; an independent watchdog sends only failure, changed-failure, persistent-failure, and recovery notifications.
 - Daily report combines watchlist, opening, intraday, OI, price, holders, external sources, position/cost state, and verification.
 
@@ -70,7 +70,7 @@ Do not store these current runtime states inside the skill. Read them from the p
 - External tools are context until live-probe validated.
 - API keys belong in local `.env.local` files only; never store them in this skill, project docs, git-tracked config, chat memory, or reports.
 - Real positions belong in the git-ignored `config/user_positions.json`; only template examples may be tracked.
-- Position/cost output is advisory. It can trigger `Reduce`, `Observe`, or `Small test` language, but it cannot authorize automatic execution.
+- Position/cost output is advisory. It can trigger `Reduce`, `Observe`, or `Small test` language, but it cannot authorize automatic execution. A due time stop is a review flag and does not rewrite the existing price/flow action.
 - Compare funding across venues only after interval normalization. Separate current predicted funding, latest settled funding, 24h average normalized funding, and 24h cumulative funding; funding history alone cannot authorize a buy.
 - Treat monitor silence as healthy only when runtime heartbeat, core output freshness, and verification status are healthy. Stale output cannot support a current trading conclusion.
 - Do not treat CEX hot/deposit wallets, contracts, routers, bridges, LP managers, quote tokens, or exchange aggregators as funding-cluster parents.

@@ -160,10 +160,10 @@ The current strategy already covers staged CEX paths, next-hop checks, quote rec
 Project runtime integration:
 
 - `alpha_intraday_flow_watch.py` now emits a report-only `cex_withdrawal_cluster` candidate from fetched token-transfer logs. The first gate requires a tracked global `cex_hot_wallet`, at least eight unlabeled recipients, a maximum 1,200-block span, recipient-total CV at or below 0.20, and at least 10,000 quote units when a context price exists; 100,000 token units is only the no-price fallback.
-- The candidate fixes `direction=unknown`, `action=Observe`, and stays outside trade-signal and Telegram-alert paths. Freshness, exact elapsed time, log-window completeness, unknown-contract filtering, common gas, next hop, redeposit, DEX execution, quote recovery, entity linkage, and operator conflict remain unresolved gates.
+- The candidate fixes `direction=unknown`, `action=Observe`, and stays outside trade-signal and Telegram-alert paths. Freshness, exact elapsed time, log-window completeness, unknown-contract filtering, common gas, next hop, redeposit, DEX execution, quote recovery, entity linkage, and operator conflict remain explicit unresolved gates.
 - Regression fixtures cover equal fan-out, unequal retail withdrawals, known infrastructure routing, `cex_deposit` source exclusion, low-value fan-out, excessive block span, and preservation of an existing bearish CEX-inflow signal.
 - `alpha_holder_concentration_watch.py` still lacks persistent role-weighted cluster inventory history.
-- `position_cost_watch.py` still does not derive `holding_days` or `time_stop_state` from `opened_at`.
+- `position_cost_watch.py` now derives `holding_days` and an independent `time_stop_state` from timezone-aware `opened_at` plus optional per-position `time_stop_days`. The field marks review timing and does not change the existing price/flow action.
 
 The next safe project unit is forward-sample collection and next-hop labeling for report-only candidates. Operator-phase inference remains deferred until entity linkage and balance history are independently verified.
 
