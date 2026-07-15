@@ -133,15 +133,17 @@ The labeled Gate hot wallet `0x0d0707963952f2fba59dd06f2b425ace40b492fe` sent 96
 
 Lesson: a tiny route test followed by a same-route large transfer is a strong discovery pattern. Wallet freshness and next hop remain required.
 
-### B2: forward case, interim refresh
+### B2: forward case, 24-hour market leg closed
 
 The frozen social post claims about $1.4M of B2 withdrawals to 28 addresses during the recent week, including 19 new wallets. A pre-signal Surf warehouse query from July 7 through `2026-07-13T09:53:13Z` independently finds 44 Gate-hot transfer rows into exactly 28 recipients. Pricing covers only 9 rows and 7 recipients for $232,961.29; warehouse token amounts have unusable decimal normalization. The pre-signal window total is unknown. The full claimed dollar amount and full-wallet freshness count remain unverified.
 
-As a post-signal follow-up, the July 13 full-day cohort contains 18 recipients with individually priced B2 receipts of at least $20K, totaling $1,279,979.34. All 18 had no earlier B2 receipt in the queried June 1-July 12 window, which supports only a `new-to-B2` label. No B2 outbound from that cohort appears in the queried daily warehouse through July 14. This is a coverage-window non-observation and does not establish holding, accumulation, or unsold status. The shared Gate-hot first hop verifies only a common source address; common control, entity linkage, operator identity, full wallet freshness, and live next hop remain unresolved.
+The 18 qualifying recipients formed entirely after the public post. Each received one same-source route test worth about $52.83-$52.87, then one transfer worth at least $20K after 181-1,199 seconds. The 18 tests total $951.26; the 18 qualifying large transfers total $1,279,028.09; all 36 transfers total $1,279,979.34. This test-then-large pattern strengthens a coordination candidate without proving common control or direction.
 
-The first 18 closed, nonzero-volume hourly bars after the post reached +0.36%, drew down -4.70%, and ended -2.11% on $976,718.51 aggregate volume. This is an under-24-hour interim replay without price confirmation.
+All 18 recipients had no earlier B2 receipt in the queried June 1-July 12 window, which supports only a `new-to-B2` label. From each qualifying large receipt through the latest visible B2 warehouse row at `2026-07-15T05:30:18Z`, no B2 outbound appears. This remains a coverage-window non-observation and does not establish holding, accumulation, unsold status, common control, entity linkage, or operator identity.
 
-Lesson: the fan-out count is independently supported while the strategy remains `Observe`. Preserve `forward_case_pending` until the 24-hour replay and later next-hop evidence mature.
+The exact first 24 closed, nonzero-volume hourly bars after the post reached +0.36%, drew down -4.70%, and ended -1.92% on $1,477,352.58 aggregate volume. An extended 43-bar snapshot through `2026-07-15T04:00:00Z` ended -2.46%. The 24-hour market leg is closed without price confirmation.
+
+Lesson: the fan-out and route-test pattern are independently supported while direction remains `unknown` and the action remains `Observe`. Status is `forward_case_24h_closed_next_hop_pending`.
 
 ## Dashboard Fields Worth Reusing
 
