@@ -165,14 +165,17 @@ The current strategy already covers staged CEX paths, next-hop checks, quote rec
 
 Project runtime integration:
 
-- `alpha_intraday_flow_watch.py` now emits a report-only `cex_withdrawal_cluster` candidate from fetched token-transfer logs. The first gate requires a tracked global `cex_hot_wallet`, at least eight unlabeled recipients, a maximum 1,200-block span, recipient-total CV at or below 0.20, and at least 10,000 quote units when a context price exists; 100,000 token units is only the no-price fallback.
+- `alpha_intraday_flow_watch.py` now emits a report-only `cex_withdrawal_cluster` candidate from the coverage-aware chunked transfer fetch shared by the withdrawal and runtime-CEX candidate paths. The module's separate transaction-sampling query remains unchanged. The coverage-aware fetch records the requested range, covered-through block, completed chunks, returned-log count, cap, and coverage state. `log_window_completeness` clears only after complete requested-window coverage without reaching the log cap.
+- The same rows provide bounded recipient history before each first cluster receipt. `new_to_token_in_window` is a same-token, scan-window label; it does not prove wallet age, ownership, or full-chain freshness.
 - After a candidate passes the report-only gates, a bounded public-RPC block-header probe populates `first_block_time_utc`, `last_block_time_utc`, `window_seconds`, and `time_window_evidence`. The process-wide budget is at most four attempts with a one-to-three-second per-attempt timeout; RPC failure, budget exhaustion, or invalid timestamp order keeps `exact_time_window` unresolved.
-- The candidate fixes `direction=unknown`, `action=Observe`, and stays outside trade-signal and Telegram-alert paths. Freshness, log-window completeness, unknown-contract filtering, common gas, next hop, redeposit, DEX execution, quote recovery, entity linkage, and operator conflict remain explicit unresolved gates.
-- Regression fixtures cover equal fan-out, unequal retail withdrawals, known infrastructure routing, `cex_deposit` source exclusion, low-value fan-out, excessive block span, block-time success/failure/invalid-order handling, and preservation of an existing bearish CEX-inflow signal.
+- Candidate history reuses current scan rows to retain positive ordinary next-hop, tracked-CEX redeposit, tracked-DEX route, same-receipt DEX execution, and quote-recovery evidence. A later bounded non-observation does not erase a prior positive observation.
+- Unique sample recipients receive a historical code review at their last sampled anchor block. The fixed process budget is four attempts, at most two endpoints per address, with a one-second timeout. Results are `eoa_at_anchor_block`, `contract_at_anchor_block`, or `rpc_unresolved`; an all-EOA sample does not clear `unknown_contract_filter`.
+- The candidate fixes `direction=unknown`, `action=Observe`, and stays outside trade-signal and Telegram-alert paths. Common native-gas attribution, complete contract exclusion, entity linkage, and operator conflict remain unresolved.
+- Regression fixtures cover complete, partial, and capped log windows; same-block recipient history; unequal retail withdrawals; known infrastructure routing; `cex_deposit` source exclusion; block-time handling; forward-evidence retention; contract-review retry fairness; and preservation of an existing bearish CEX-inflow signal.
 - `alpha_holder_concentration_watch.py` still lacks persistent role-weighted cluster inventory history.
 - `position_cost_watch.py` now derives `holding_days` and an independent `time_stop_state` from timezone-aware `opened_at` plus optional per-position `time_stop_days`. The field marks review timing and does not change the existing price/flow action.
 
-The next safe project unit is forward-sample collection and next-hop labeling for report-only candidates. Operator-phase inference remains deferred until entity linkage and balance history are independently verified.
+The next safe project unit is natural-sample observation under server cron. Common native-gas attribution requires a bounded indexed source with complete transfer locators; operator-phase inference remains deferred until entity linkage and balance history are independently verified.
 
 ## Reference-Only Material
 
