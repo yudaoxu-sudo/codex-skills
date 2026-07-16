@@ -301,3 +301,50 @@ Representative sources:
 - `tokenomics_catalyst`: burn, buyback, buyback-to-liquidity, fee donation, foundation, airdrop, initial float, utility change.
 - `identity_label_quality`: verified official, exchange/custody, market maker, inferred whale, KOL, unknown.
 - `venue_rotation`: Binance Alpha, Binance spot/perps, Binance Wallet, Coinbase, Korea CEX, SOL/Pump, Base, ASTER, unknown.
+
+## 2026-07-16 Incremental Latest-100 Review
+
+### Coverage
+
+- Reviewed `100/100` unique posts from `2026-06-12T06:31:11Z` through `2026-07-16T13:11:12Z`.
+- Raw fetch SHA-256: `adb69a00239fe6481de29adfade237cd0701e39c875a394cf7fe92b473b49f25`.
+- `17` posts are newer than the prior review boundary; `83` overlap the earlier 500-post corpus.
+- The sample contains `18` quote posts, and `15` quote posts reference posts inside the same sample. Outcome counts therefore require root-signal deduplication.
+- All post claims and screenshots remain `social` until local official, on-chain, or market evidence verifies them.
+
+### Durable Additions
+
+1. **Outcome denominator**
+   - Assign one `root_signal_id` to the original signal.
+   - Merge self-quotes, updates, celebrations, and failure explanations into that case.
+   - Predefine 24h, 72h, and 7d horizons, invalidation, MFE, MAE, end return, exit feasibility, and `unresolved` state.
+   - Keep unresolved cases in the denominator.
+
+2. **Current regime expectancy**
+   - Recompute target, staged exits, and time stop from current liquidity, MC/FDV, scope-matched aggregate OI, venue policy, and capital concentration.
+   - Historical monster-token multiples are context and do not become a target baseline.
+
+3. **Supply lifecycle**
+   - Extend `tokenomics_catalyst` with `mint`, `reissue`, `retirement`, `compensation`, `snapshot`, and `migration`.
+   - Verify relative circulating supply, first receiver, lock conditions, and CEX/LP path.
+
+4. **Source-time sanity**
+   - Store source publication time, claimed event time, and quote context.
+   - Keep a claim pending when those fields conflict.
+   - Example: `https://x.com/ElonKely_/status/2069768362297856076` was published on `2026-06-24` but says an event "will" happen in 2023; original quote context is unresolved.
+
+5. **Wash-volume candidate boundary**
+   - A social wash-volume claim has `runtime_effect=none`.
+   - Promotion requires local gross buy/sell, net-to-gross, repeated or round-trip addresses, and quote recovery.
+
+### Counterexamples
+
+- `https://x.com/ElonKely_/status/2074859463027408945` and `https://x.com/ElonKely_/status/2075915168996118791`: PARTI wallet fan-out was followed by a failed direction. A separate same-day public signal has a project-local replay in `cases/2026-07-13_miles082510_wallet_cluster_review.md` with `+7.24%` MFE, `-36.50%` MAE, and `-33.92%` end return; those metrics cannot be assigned to the ElonKely root signal.
+- `https://x.com/ElonKely_/status/2075164060409270485`: EVAA combines claimed accumulation and growing long OI with falling price. Motive explanations remain inference.
+- `https://x.com/ElonKely_/status/2077033474381545937` and `https://x.com/ElonKely_/status/2076931508808327191`: the author explicitly warns that an old monster-token regime should not define current targets and exits.
+
+### Deferred Runtime Ideas
+
+- Tracked multisig, vesting, unlock, and staking sources may later enter report-only distribution-cluster detection after local positive and negative fixtures exist.
+- An automatic wash-volume detector remains deferred until local round-trip and quote-recovery fixtures exist.
+- DEXE/security-event analogies remain discovery prompts pending official incident evidence and a complete wallet path.
